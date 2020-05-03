@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Album</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <script type="text/javascript" src="B1.js"></script>
+</head>
+<body>
+<div class="container">
+    <div>
+        <h1>Photo Album</h1>
+    </div>
+    <div id="query-photo" class="info">
+        <label>Query photo:</label><br>
+        <input id="query" class="box" type="text" name="textfield" placeholder="Photo description"> <br>
+        <button id="search" type="button" class="btn">Search</button>
+    </div>
+    <br>
+    <div id="upload-photo" class="info">
+        <label>Upload photo:</label><br>
+        <input type="file" id="file" class="box2" name="key"> <br>
+        <button id="upload" type="button" class="btn">Upload</button>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="apiGateway-js-sdk/apigClient.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/sigV4Client.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/apiGatewayClient.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/simpleHttpClient.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/utils.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/axios/dist/axios.standalone.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/components/hmac.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="apiGateway-js-sdk/lib/url-template/url-template.js"></script>
+</body>
+</html>
