@@ -1,12 +1,9 @@
 $(document).ready(function(){
-
-    window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-    const synth = window.speechSynthesis;
-    const recognition = new SpeechRecognition();
-    const icon = document.querySelector('i.fa.fa-microphone')
+    var apigClient = apigClientFactory.newClient();
     var apigClient = apigClientFactory.newClient({
         apiKey: ''
     });
+    
     $("#search").click(function(){
         var q = $('#query').val();
         console.log("q: ", q)
@@ -18,30 +15,34 @@ $(document).ready(function(){
 
         apigClient.searchGet(params, body, additionalParams).then(function(result){
             console.log("success");
-            // console.log(result);
             var data = result.data; 
             console.log(data);
+
+            // create div for image display
             if ($(".photo").length === 0){
-                $(".container").append('<br><div class="photo" ><label>Search Result:</label><br></div>');
+                $(".container").append('<br><div class="photo" ></div>');
+                if (data.length == 0){
+                    $(".photo").append('<label>No result!</label><br>');
+                }else{
+                    $(".photo").append('<label>Search Result:</label><br>');
+                }
             }else{
                 $(".photo").empty();
                 $(".photo").append('<label>Search Result:</label><br>');
             }
-            
+
+            // display image
             for (i = 0; i < data.length; i++){
                 var url = data[i];
                 $(".photo").append('<img src="' + url + '" >');
             }
-            // $('#query').val('');
         }).catch(function(result){
             console.log("error");
             console.log(result);
             var data = result.data; 
             console.log(data);
-            //This is where you would put an error callback
         });
     });
-
 
     function getBase64(file) {
         return new Promise((resolve, reject) => {
@@ -57,52 +58,41 @@ $(document).ready(function(){
           reader.onerror = error => reject(error);
         });
     }
-
-
+    
     $("#upload").click(function(){
         var f = $('#file').prop('files')[0];
-
-       
         if(f){
             if (!f.type.match('image.*')) {
                 alert("File must be image.");
                 return false;
             }
-            // var reader = new FileReader();
-            // var ff = reader.result;
-            // console.log(reader.result);      
-            
+
             var encoded_image = getBase64(f).then(
                 data => {
                 console.log(data);
                 var body = {data};
-                var params = {"item" : f.name, "folder" : "photo-album-hw3", "Content-Type" : f.type};
+                var params = {
+                    "item" : f.name, 
+                    "folder" : "photo-album-hw3", 
+                    "Content-Type" : f.type + ";base64"
+                    
+                };
+                
                 var additionalParams = {};
                 apigClient.folderItemPut(params, body, additionalParams).then(function(result){
                     console.log("success.");
                     console.log(result);
                     var data = result.data; 
                     console.log(data);
-                    }).catch(function(result){
-                        console.log("failed.");
-                        console.log(result);
-                        var data = result.data; 
-                        console.log(data);
-                    });
+                }).catch(function(result){
+                    console.log("failed.");
+                    console.log(result);
+                    var data = result.data; 
+                    console.log(data);
+                });
 
             });
-            
-            
         }
     });
-
-
-    function searchFromVoice() {
-        recognition.start();
-        recognition.onresult = (event) => {
-          const speechToText = event.results[0][0].transcript;
-          console.log(speechToText)
-        }
-    }
     
 });

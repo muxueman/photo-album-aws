@@ -53,7 +53,7 @@ apigClientFactory.newClient = function (config) {
 
     
     // extract endpoint and path from url
-    var invokeUrl = 'https://4dkmszbmeh.execute-api.us-east-1.amazonaws.com/testN';
+    var invokeUrl = 'https://4dkmszbmeh.execute-api.us-east-1.amazonaws.com/test-post';
     var endpoint = /(^https?:\/\/[^\/]+)/g.exec(invokeUrl)[1];
     var pathComponent = invokeUrl.substring(endpoint.length);
 
@@ -116,6 +116,42 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(searchOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.uploadPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var uploadPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/upload').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(uploadPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.uploadOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var uploadOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/upload').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(uploadOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
